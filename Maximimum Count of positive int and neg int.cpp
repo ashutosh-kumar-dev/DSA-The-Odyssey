@@ -6,9 +6,11 @@
 using namespace std;
 int main(){
         int n=4;
-        //int arr[n]={-1,-2,-3,-4,-5,-6,7,8,9,10,11};
+        //int arr[n]={-1,-2,-3,-4,-5,-6,7,8,9};
+       // int arr[n]={-1,-2,-3,-4,-5,-6,7,8,9,10,11};
         //int arr[n]={-3,-2,-1,0,0,1,2};
         //int arr[n]={60,13245,0,0};
+        int arr[n]={0,0,60,13245};
 
 
         int low=0;
@@ -23,6 +25,8 @@ int main(){
             }
             else low=mid;
         }
+
+        cout<<high-low<<endl;
         cout<<mid<<endl;
 
 /*********here finding total neg and pos  no***********/
@@ -49,8 +53,8 @@ int main(){
             }
         }
 /**************checking greatest between them***********************/
-        if(pos>neg) cout<<pos;
-        else cout<<neg;
+        if(pos>neg) cout<<"+ve : "<<pos;
+        else cout<<"-ve : "<<neg;
         //cout<<neg<<"  "<<pos;
 
 
