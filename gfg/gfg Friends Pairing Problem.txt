@@ -1,0 +1,78 @@
+//============================== recursion ===============================
+class Solution
+{
+private:
+    int mod = 1e9+7;
+public:
+    
+    int solve(int n){
+        if(n==1) return 1;
+        if(n==2) return 2;
+        
+        return (1*(n-1)*(solve(n-2))%mod + 1*(solve(n-1))%mod)%mod; //this choices are induced for two types seperately 
+								   //because in the choice they are asking two thing 
+    }
+
+    
+    int countFriendsPairings(int n) 
+    { 
+       return  solve(n);
+    }
+};   
+
+//===================== memoization ================================
+
+class Solution
+{
+private:
+    int mod = 1e9+7;
+     vector<int > dp;
+public:
+    
+    int solve(int n){
+        if(n==1) return 1;
+        if(n==2) return 2;
+        
+        if(dp[n] !=-1 ) return dp[n];
+        
+        return dp[n]= (1LL * 1 * (n-1) * (solve(n-2))%mod +  1 * (solve(n-1))%mod)%mod;
+    }
+
+    
+    int countFriendsPairings(int n) 
+    { 
+        dp.assign(n+1,-1);
+       return  solve(n);
+    }
+};    
+ 
+
+//=================================== dp ======================================
+class Solution
+{
+private:
+    int mod = 1e9+7;
+public:
+    
+    int solve(int n){
+        
+        vector<int > dp(n+1);
+        dp[0]=0;
+        dp[1]=1;
+        dp[2]=2;
+        
+        for(int i=3; i<n+1; i++){
+            
+         dp[i]= (1LL * 1 * (i-1) * (dp[i-2])%mod +  1 * (dp[i-1])%mod)%mod;
+        }
+        return dp[n];
+        
+    }
+
+    
+    int countFriendsPairings(int n) 
+    { 
+       
+       return  solve(n);
+    }
+};  
