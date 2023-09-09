@@ -1,0 +1,33 @@
+class Solution{
+public:	
+    void solve(int n, int one, int zero, string out , vector<string> & ans){
+        if(n==0){
+            ans.push_back(out);
+            return ;
+        }
+        
+        
+        string o1 = out;
+        o1.push_back('1');
+        solve(n-1, one+1, zero , o1, ans);
+        
+        if(one>zero ){
+            string o2=out;
+            o2.push_back('0');
+            
+            solve(n-1, one, zero+1, o2, ans);
+        }
+        
+    }
+
+	vector<string> NBitBinary(int n)
+	{
+	   int zero=0;
+	   int one=1;
+	   string out="1";
+	   vector<string > ans;
+	   
+	   solve(n-1, one, zero, out, ans);
+	   return ans;
+	}
+};

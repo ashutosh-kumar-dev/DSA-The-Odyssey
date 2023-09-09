@@ -1,0 +1,28 @@
+class Solution {
+  public:
+  
+  int  solve(vector<int > &arr,int index,  int k){
+      if(arr.size()==1){
+          return arr[0];
+      }
+      
+      index = (index+k) % arr.size();
+      arr.erase(arr.begin()+index);
+      
+      solve(arr, index, k);
+      
+      
+  }
+    
+    int safePos(int n, int k) {
+       
+       vector<int > arr;
+       int index=0;
+       
+       for(int i = 1; i<=n ; i++){
+           arr.push_back(i);
+       }
+       
+      return solve(arr, index, k-1);
+    }
+};

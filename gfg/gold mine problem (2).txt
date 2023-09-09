@@ -1,0 +1,72 @@
+
+//============================ recursion ======================
+class Solution{
+public:
+    
+    int solve(int n , int m   , int x, int y, vector<vector<int>> &gold){
+        
+        if(x<0 || x==n || y==m) return 0;
+        
+        int right = gold[x][y] + solve(n, m , x, y+1, gold);
+        int rUp = gold[x][y] + solve(n, m , x-1, y+1, gold);
+        int rDown = gold[x][y]+ solve(n, m , x+1, y+1, gold);
+        
+        return max(right, max(rUp, rDown));
+        
+        
+    }
+
+
+    
+    int maxGold(int n, int m, vector<vector<int>> gold)
+    {
+     
+     int maxi = INT_MIN; 
+    for(int i = 0 ; i<n; i++){
+        int ans = solve(n, m , i, 0, gold);
+        maxi = max(maxi, ans);
+    }    
+    return maxi; 
+      
+      
+    }
+};
+
+//============================ memoization ==================
+class Solution{
+public:
+    int dp[51][51];
+    
+    int solve(int n , int m   , int x, int y, vector<vector<int>> &gold){
+        
+        if(x<0 || x==n || y==m) return 0;
+        
+        if(dp[x][y] !=-1 ) return dp[x][y];
+        
+        int right = gold[x][y] + solve(n, m , x, y+1, gold);
+        int rUp = gold[x][y] + solve(n, m , x-1, y+1, gold);
+        int rDown = gold[x][y]+ solve(n, m , x+1, y+1, gold);
+        
+        return dp[x][y]= max(right, max(rUp, rDown));
+        
+        
+    }
+
+
+    
+    int maxGold(int n, int m, vector<vector<int>> gold)
+    {
+     
+     memset(dp, -1, sizeof(dp));
+     
+     int maxi = INT_MIN; 
+    for(int i = 0 ; i<n; i++){
+        int ans = solve(n, m , i, 0, gold);
+        maxi = max(maxi, ans);
+    }    
+    return maxi; 
+      
+      
+    }
+};
+//============================== dp =====================

@@ -1,0 +1,40 @@
+class Solution {
+public:
+
+    void solve(int open , int close , string out, vector<string> &ans){
+        if(open == 0 && close == 0){
+            ans.push_back(out);
+            return ;
+        }
+
+        if(open != 0){
+            string o1= out;
+            o1.push_back('(');
+
+            solve(open -1 , close, o1, ans);
+        }
+        if(close> open ){
+            string o2= out;
+            o2.push_back(')');
+
+            solve(open, close-1, o2, ans);
+        }
+
+
+
+    }
+
+    vector<string> generateParenthesis(int n) {
+        if(n==0) return {};
+
+        int open = n;
+        int close = n;
+        string out = "(";
+        vector<string> ans;
+
+        solve(open-1 , close, out, ans);
+
+        return ans;
+        
+    }
+};
