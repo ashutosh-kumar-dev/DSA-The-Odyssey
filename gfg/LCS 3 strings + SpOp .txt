@@ -1,0 +1,86 @@
+//================================ recursion ===================================
+int solve(string A, string B, string C, int n1, int n2, int n3){
+    
+    if(n1==0 || n2==0 || n3==0)
+        return 0;
+     
+    
+    if(A[n1-1]==B[n2-1] && B[n2-1]==C[n3-1])
+        return  1 + solve(A, B, C, n1-1, n2-1, n3-1);
+    else
+        return max(solve(A, B, C, n1-1, n2, n3), max(solve(A, B, C, n1, n2-1, n3),solve(A, B, C, n1, n2, n3-1)));
+    
+}
+
+int LCSof3 (string A, string B, string C, int n1, int n2, int n3)
+{
+   dp.assign(n1+1, vector<vector<int>>(n2+1, vector<int>(n3+1, -1))); 
+   return solve(A, B, C, n1, n2, n3);
+}
+
+//========================= memoization ===============================================
+
+vector<vector<vector<int>>> dp;
+int solve(string A, string B, string C, int n1, int n2, int n3){
+    
+    if(n1==0 || n2==0 || n3==0)
+        return 0;
+    if(dp[n1][n2][n3] !=-1 ) return dp[n1][n2][n3]; 
+    
+    if(A[n1-1]==B[n2-1] && B[n2-1]==C[n3-1])
+        return dp[n1][n2][n3] = 1 + solve(A, B, C, n1-1, n2-1, n3-1);
+    else
+        return dp[n1][n2][n3] =max(solve(A, B, C, n1-1, n2, n3), max(solve(A, B, C, n1, n2-1, n3),solve(A, B, C, n1, n2, n3-1)));
+    
+}
+
+int LCSof3 (string A, string B, string C, int n1, int n2, int n3)
+{
+   dp.assign(n1+1, vector<vector<int>>(n2+1, vector<int>(n3+1, -1))); 
+   return solve(A, B, C, n1, n2, n3);
+}
+
+//========================= dp ===============================================
+
+int LCSof3 (string s1, string s2, string s3, int n1, int n2, int n3)
+{
+   vector<vector<vector<int>>> dp(n1+1, vector<vector<int>>(n2+1, vector<int>(n3+1, 0))); 
+   
+   for(int i = 1 ; i<n1+1; i++){
+       for(int j = 1; j<n2+1; j++){
+           for(int k=1; k<n3+1; k++){
+               
+               if(s1[i-1] ==  s2[j-1] && s2[j-1] == s3[k-1])
+                    dp[i][j][k] = 1 + dp[i-1][j-1][k-1];
+               else
+                    dp[i][j][k] = max(dp[i-1][j][k], max(dp[i][j-1][k], dp[i][j][k-1]));
+           }
+       }
+   }
+   return dp[n1][n2][n3];
+}
+
+//============================== space optimization ===================================
+
+
+int LCSof3 (string s1, string s2, string s3, int n1, int n2, int n3)
+{
+   
+   vector<vector<int>> prevRow(n2+1, vector<int>(n3+1, 0)); 
+   vector<vector<int>> currRow(n2+1, vector<int>(n3+1, 0)); 
+   
+   for(int i = 1 ; i<n1+1; i++){
+       for(int j = 1; j<n2+1; j++){
+           for(int k=1; k<n3+1; k++){
+               
+               if(s1[i-1] ==  s2[j-1] && s2[j-1] == s3[k-1])
+                    currRow[j][k] = 1 + prevRow[j-1][k-1];
+               else
+                    currRow[j][k] = max(prevRow[j][k], max(currRow[j-1][k], currRow[j][k-1]));
+           }
+           
+       }
+       prevRow = currRow;
+   }
+   return prevRow[n2][n3];
+}

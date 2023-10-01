@@ -1,0 +1,129 @@
+//=============================== recursion ================================
+
+
+
+class Solution {
+public:
+    
+    int solve(int i, int count , int n,  vector<int>& arr) {
+     
+     if(i >= n)
+        return 0;
+     
+     if(dp[i][count] !=-1 ) return dp[i][count] ;   
+     
+    int take= 0;
+    if(count <2)
+        take = arr[i] + solve(i+1, count +1, n, arr);
+        
+   
+    int notTake = solve(i+1, 0, n, arr);
+    
+    return dp[i][count] = max(take , notTake);
+    
+    }
+
+    int findMaxSum(vector<int>& arr) {
+        
+        int n = arr.size();
+        
+        return solve(0,0,n, arr);
+    }
+};
+
+//==================================== memoization =============================
+
+
+class Solution {
+public:
+    
+   vector<vector<int> >dp;
+    int solve(int i, int count , int n,  vector<int>& arr) {
+     
+     if(i >= n)
+        return 0;
+     
+     if(dp[i][count] !=-1 ) return dp[i][count] ;   
+     
+    int take= 0;
+    if(count <2)
+        take = arr[i] + solve(i+1, count +1, n, arr);
+        
+   
+    int notTake = solve(i+1, 0, n, arr);
+    
+    return dp[i][count] = max(take , notTake);
+    
+    }
+
+    int findMaxSum(vector<int>& arr) {
+        
+        int n = arr.size();
+        dp.assign(n+ 1,vector<int> (3, -1));
+        return solve(0,0,n, arr);
+    }
+};
+
+//========================== dp =======================================
+
+
+class Solution {
+public:
+    
+   
+
+    int findMaxSum(vector<int>& arr) {
+        
+        int n = arr.size();
+        
+        
+        vector<vector<int >> dp(n+1, vector<int>(3,0));
+        
+        for(int i = n-1; i>=0; i--){
+            for(int count = 2 ; count>=0 ;count--){
+                
+                int take = 0;
+                if(count < 2)
+                    take  = arr[i] + dp[i+1][count + 1];
+                
+                int notTake = dp[i+1][0];
+                
+                dp[i][count] = max(take, notTake);
+                
+            }
+        }
+        return dp[0][0];
+    }
+};
+
+//================================= dp SpOp=====================
+class Solution {
+public:
+    
+   
+
+    int findMaxSum(vector<int>& arr) {
+        
+        int n = arr.size();
+        
+        
+        vector<int > currRow(3,0);
+        vector<int > nextRow(3,0);
+        
+        for(int i = n-1; i>=0; i--){
+            for(int count = 2 ; count>=0 ;count--){
+                
+                int take = 0;
+                if(count < 2)
+                    take  = arr[i] + nextRow[count + 1];
+                
+                int notTake = nextRow[0];
+                
+                currRow[count] = max(take, notTake);
+                
+            }
+            nextRow = currRow;
+        }
+        return nextRow[0];
+    }
+};

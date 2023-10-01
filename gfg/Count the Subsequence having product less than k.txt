@@ -1,0 +1,26 @@
+//========================= recursion =================================
+
+int solve(int n , int product , int k , vector<int> arr){
+	
+	
+	if(n==0)
+	   return 0;
+	if(k <=1 )          // should be <= 1  ... k=1 then in array element should be 
+                            //small than 1 to make product less then 1 .... 
+                            //which is not possible
+	   return 0;
+
+	int take = 0;
+	if(product * arr[n-1] < k){
+
+		take = 1 + solve(n-1, product * arr[n-1], k, arr);
+	}
+	int notTake = 0 + solve(n-1, product, k, arr);
+
+	return take + notTake ;
+
+
+}
+int main(){
+	return solve(n, 1, k, arr);
+}

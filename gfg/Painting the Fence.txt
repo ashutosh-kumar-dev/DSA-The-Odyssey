@@ -1,0 +1,65 @@
+// ============================= recursion ============================
+class Solution{
+    public:
+    int mod = 1e+7;
+    long long solve(int n, int k){
+        
+        if(n==1) return k;
+        if(n==2) return k*k;
+        
+        return ((solve(n-1,k)*(k-1)) % mod + (solve(n-2, k)*(k-1)) % mod ) %mod;
+        
+    }
+    long long countWays(int n, int k){
+      
+      return solve(n, k);
+      
+    }
+};
+
+//================================ memoization =================================
+class Solution{
+    public:
+    int mod = 1e9+7;
+    vector<long long> dp;
+    long long solve(int n, int k){
+        
+        if(n==1) return k;
+        if(n==2) return k*k;
+        
+        if(dp[n] !=-1 ) return dp[n];
+        
+        return dp[n] = (solve(n-1,k)*(k-1)   +  solve(n-2, k)*(k-1) ) %mod;
+        
+    }
+    long long countWays(int n, int k){
+        
+      dp.assign(n+1,-1);
+      
+      return solve(n, k);
+      
+    }
+};
+
+//============================= dp ==========================
+class Solution{
+    public:
+    
+  
+    long long countWays(int n, int k){
+        int mod = 1e9+7;
+        vector<long long> dp(n+1);
+        
+        dp[1] = k;
+        dp[2] = k*k;
+        
+        for(int i=3 ; i<n+1; i++){
+            dp[i]= ( dp[i-1]*(k-1) + dp[i-2]*(k-1) ) % mod ;
+        }
+        
+        
+      
+      return dp[n];
+      
+    }
+};

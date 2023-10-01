@@ -1,0 +1,42 @@
+
+// ======================= recursion =============================
+
+class Solution{
+  public:
+  
+    int solve(vector<vector<int>>& a, vector<vector<int>>& T, vector<int>& x, int n, int i , int j ){
+        
+        if(j == n){
+            return x[i];
+        }
+        
+        int same_assemb = solve(a, T, x, n, i, j+1);
+        int diff_assemb = INT_MAX;
+        
+        if( j < n-1){
+            if(i==0)
+                diff_assemb = T[i][j+1] + solve(a, T, x, n, 1, j+1);
+            else
+                diff_assemb = T[i][j+1] + solve(a, T, x, n, 0, j+1);
+        }
+        
+        return a[i][j]+ min(same_assemb, diff_assemb);
+        
+    }
+  
+  
+ 
+    int carAssembly(vector<vector<int>>& a, vector<vector<int>>& T, vector<int>& e, vector<int>& x)
+    {
+       int n = a[0].size();
+       int line1 = e[0] + solve(a, T, x, n , 0, 0 );
+       int line2 = e[1] + solve(a, T, x, n, 1, 0);
+       
+       return min(line1, line2);
+       
+    }
+};
+
+
+// ========================== memoization =====================
+

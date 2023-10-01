@@ -1,0 +1,81 @@
+//============================ recursion =================================
+
+class Solution{
+    public:
+    
+    int solve(int i, int k, int n, int arr[]){
+        if(i>=n-1)
+            return 0;
+        int take=0;
+        if(arr[i+1] - arr[i] < k)
+            take = arr[i] + arr[i+1] + solve(i+2 , k, n, arr);
+        
+        int notTake = 0 + solve(i+1, k , n , arr);
+        
+        return max(take, notTake);
+    }
+    int maxSumPairWithDifferenceLessThanK(int arr[], int n, int k)
+    {
+       sort(arr + 0, arr + n);
+       
+       solve(0, k ,n , arr);
+    }
+};
+
+//================================ memoization ========================
+class Solution{
+    public:
+   
+   vector<int> dp; 
+    int solve(int i, int k, int n, int arr[]){
+        if(i>=n-1)
+            return 0;
+            
+        if(dp[i] !=-1 ) return dp[i];
+        
+        int take=0;
+        if(arr[i+1] - arr[i] < k)
+            take = arr[i] + arr[i+1] + solve(i+2 , k, n, arr);
+        
+        int notTake = 0 + solve(i+1, k , n , arr);
+        
+        return  dp[i] = max(take, notTake);
+    }
+    int maxSumPairWithDifferenceLessThanK(int arr[], int n, int k)
+    {
+       sort(arr + 0, arr + n);
+       
+       dp.assign(n+1, -1);
+       solve(0, k ,n , arr);
+    }
+};
+
+
+//========================= dp ========================
+class Solution{
+    public:
+   
+   
+    
+    int maxSumPairWithDifferenceLessThanK(int arr[], int n, int k)
+    {
+       sort(arr + 0, arr + n);
+       
+       vector<int> dp(n+1, 0); 
+       
+       for(int i=n-2 ; i>=0 ; i--){
+           
+           int take = 0;
+           if(arr[i+1] - arr[i] < k)
+            take = arr[i] + arr[i+1] + dp[i+2];
+            
+           int notTake = 0 + dp[i+1];
+           
+           dp[i] = max(take , notTake);
+       }
+       
+       return dp[0];
+       
+       
+    }
+};

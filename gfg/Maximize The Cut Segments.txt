@@ -1,0 +1,116 @@
+//============================== recursion =============================
+    class Solution
+{
+public:
+    
+    int solve(int N, int x, int y, int z)
+    {
+        if ( N == 0)
+            return 0;
+
+        
+        
+        int x_cut = INT_MIN;
+        int y_cut = INT_MIN;
+        int z_cut = INT_MIN;
+        
+        if (x <= N)
+            x_cut =  solve( N - x, x, y, z);
+        if (y <= N)
+            y_cut = solve( N - y, x, y, z);
+        if (z <= N)
+            z_cut = solve( N - z, x, y, z);
+        
+        return  1 + max(x_cut, max(y_cut, z_cut));
+    }
+
+    int maximizeTheCuts(int N, int x, int y, int z)
+    {
+        
+       
+        int ans = solve(N, x, y, z);
+        
+        return (ans <= 0) ? 0 : ans ;
+        
+    }
+};
+
+
+
+
+//============================ memoization =========================
+    class Solution
+{
+public:
+    vector<int> dp;  // 2D vector of integers
+
+    int solve(int N, int x, int y, int z)
+    {
+        if ( N == 0)
+            return 0;
+
+        if (dp[N] != -1)
+            return dp[N];
+        
+        int x_cut = INT_MIN;
+        int y_cut = INT_MIN;
+        int z_cut = INT_MIN;
+        
+        if (x <= N)
+            x_cut =  solve( N - x, x, y, z);
+        if (y <= N)
+            y_cut = solve( N - y, x, y, z);
+        if (z <= N)
+            z_cut = solve( N - z, x, y, z);
+        
+        return dp[N] = 1 + max(x_cut, max(y_cut, z_cut));
+    }
+
+    int maximizeTheCuts(int N, int x, int y, int z)
+    {
+        
+        dp.assign(N + 1, -1);
+        int ans = solve(N, x, y, z);
+        
+        return (ans <= 0) ? 0 : ans ;
+        
+    }
+};
+
+//================================= dp ======================================
+
+
+class Solution
+{
+public:
+
+    int maximizeTheCuts(int N, int x, int y, int z)
+    {
+        
+        vector<int > dp(N+1);
+        dp[0] = 0;
+        
+         
+        
+        for(int i = 1; i<N+1 ; i++){
+            
+            int x_cut = INT_MIN;
+            int y_cut = INT_MIN;
+            int z_cut = INT_MIN;
+            
+            if (x <= i)
+                x_cut = dp[i - x];
+            if (y <= i)
+                y_cut =  dp[i - y]; 
+            if (z <= i)
+                z_cut =  dp[i - z];
+                
+            dp[i] = 1 + max(x_cut, max(y_cut, z_cut));
+        }
+       
+      
+        
+        return (dp[N] <= 0) ? 0 : dp[N] ;
+        
+    }
+};

@@ -1,0 +1,104 @@
+//=============================== recursion =================
+class Solution{
+		
+
+	public:
+	
+	int solve(int curr,int prev, int arr[], int n){
+	    if(curr == n)
+	        return 0;
+	        
+	   int take = 0;    
+	   if(prev == -1 || arr[curr] > arr[prev])
+	        take = arr[curr] + solve(curr +1 ,curr, arr, n);
+	   
+	   int notTake = solve(curr +1, prev, arr, n);
+	   
+	   return max(take , notTake);
+	}
+	int maxSumIS(int arr[], int n)  
+	{  
+	   return  solve(0, -1 , arr, n);
+	}  
+};
+//=============================== memoization =================
+class Solution{
+		
+
+	public:
+	vector<vector<int>> dp;
+	int solve(int curr,int prev, int arr[], int n){
+	    if(curr == n)
+	        return 0;
+	     
+	   if(dp[curr][prev + 1] !=-1 )
+	        return dp[curr][prev + 1];
+	        
+	   int take = 0;    
+	   if(prev == -1 || arr[curr] > arr[prev])
+	        take = arr[curr] + solve(curr +1 ,curr, arr, n);
+	   
+	   int notTake = solve(curr +1, prev, arr, n);
+	   
+	   return dp[curr][prev + 1] = max(take , notTake);
+	}
+	int maxSumIS(int arr[], int n)  
+	{  
+	   dp.assign(n+1, vector<int> (n+1, -1));
+	   return  solve(0, -1 , arr, n);
+	}  
+};
+
+//================================= dp =======================
+class Solution{
+		
+
+	public:
+
+	int maxSumIS(int arr[], int n)  
+	{  
+	   vector<vector<int>> dp (n+1, vector<int> (n+1, 0));
+	   
+	   for(int curr = n-1 ; curr >= 0; curr--){
+	       for(int prev = curr-1; prev >= -1; prev --){
+	           
+	           int take = 0;
+	           if(prev == -1 || arr[curr] > arr[prev])
+	                take = arr[curr] + dp[curr+1][curr + 1];
+	           
+	           int notTake = dp[curr +1 ][prev + 1];
+	           
+	           dp[curr][prev + 1] = max(take, notTake);
+	       }
+	   }
+	   return  dp[0][0];
+	}  
+};
+
+//===================================== space optimization =====================
+class Solution{
+		
+
+	public:
+
+	int maxSumIS(int arr[], int n)  
+	{  
+	  vector<int> currRow (n+1, 0);
+	  vector<int> nextRow (n+1, 0);
+	   
+	   for(int curr = n-1 ; curr >= 0; curr--){
+	       for(int prev = curr-1; prev >= -1; prev --){
+	           
+	           int take = 0;
+	           if(prev == -1 || arr[curr] > arr[prev])
+	                take = arr[curr] + nextRow[curr + 1];
+	           
+	           int notTake = nextRow[prev + 1];
+	           
+	           currRow[prev + 1] = max(take, notTake);
+	       }
+	       nextRow = currRow;
+	   }
+	   return  nextRow[0];
+	}  
+};
