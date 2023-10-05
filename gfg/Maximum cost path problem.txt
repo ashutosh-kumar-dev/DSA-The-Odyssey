@@ -1,0 +1,130 @@
+//================================== recursion ========================
+
+
+class Solution{
+public:
+    
+    int solve(int i, int j, vector<vector<int>> &arr, int n){
+        
+        if(i>=n || j>=n || j<0)
+            return 0;
+            
+       
+        
+        int rdiag = solve(i+1, j+1, arr, n);
+        int down = solve(i+1, j, arr, n);
+        int ldiag = solve(i+1, j-1, arr, n);
+        
+        int ans = arr[i][j] + max(rdiag, max(down, ldiag));
+        
+        return  ans;
+    }
+    int maximumPath(int n, vector<vector<int>> arr)
+    {
+        
+        int maxi = 0;
+        for(int j=0; j<n; j++){
+            int res = solve(0 , j, arr, n);
+            maxi= max(res, maxi);
+        }
+        return maxi;
+    }
+};
+
+//================================== memoization ========================
+class Solution{
+public:
+    vector<vector<int>> dp;
+    int solve(int i, int j, vector<vector<int>> &arr, int n){
+        
+        if(i>=n || j>=n || j<0)
+            return 0;
+            
+        if(dp[i][j] !=-1 ) return dp[i][j];
+        
+        int rdiag = solve(i+1, j+1, arr, n);
+        int down = solve(i+1, j, arr, n);
+        int ldiag = solve(i+1, j-1, arr, n);
+        
+        int ans = arr[i][j] + max(rdiag, max(down, ldiag));
+        
+        return  dp[i][j] = ans;
+    }
+    int maximumPath(int n, vector<vector<int>> arr)
+    {
+        dp.assign(n, vector<int> (n, -1));
+        
+        int maxi = 0;
+        for(int j=0; j<n; j++){
+            int res = solve(0 , j, arr, n);
+            maxi= max(res, maxi);
+        }
+        return maxi;
+    }
+};
+
+//================================= dp ========================================
+
+class Solution{
+public:
+    
+    int maximumPath(int n, vector<vector<int>> arr)
+    {
+        vector<vector<int>> dp(n+1, vector<int> (n+1, 0));
+        
+        for(int i= n-1; i>=0; i--){
+            for(int j=n-1; j>=0; j--){
+                
+                int rdiag = dp[i+1][j+1];
+                int down = dp[i+1][j];
+                int ldiag = dp[i+1][j-1];
+                
+                dp[i][j] = arr[i][j] + max(rdiag, max(ldiag, down));
+            }
+        }
+        
+        int maxi = 0;
+        
+        for(int j=0; j<=n ; j++){
+            
+            maxi= max(maxi, dp[0][j]);
+        }
+        return maxi;
+        
+    
+    }
+};
+
+//================================ SpOp ======================================
+
+class Solution{
+public:
+    
+    int maximumPath(int n, vector<vector<int>> arr)
+    {
+       vector<int> currRow(n+1, 0);
+       vector<int> nextRow(n+1, 0);
+        
+        for(int i= n-1; i>=0; i--){
+            for(int j=n-1; j>=0; j--){
+                
+                int rdiag = nextRow[j+1];
+                int down = nextRow[j];
+                int ldiag = nextRow[j-1];
+                
+               currRow[j] = arr[i][j] + max(rdiag, max(ldiag, down));
+            }
+            nextRow = currRow;
+        }
+        
+        int maxi = 0;
+        
+        for(int j=0; j<=n ; j++){
+            
+            maxi= max(maxi, nextRow[j]);
+        }
+        return maxi;
+        
+    
+    }
+};

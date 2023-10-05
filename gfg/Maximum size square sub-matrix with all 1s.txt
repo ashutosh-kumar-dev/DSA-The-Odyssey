@@ -1,0 +1,152 @@
+//================================= recursion ==============================
+class Solution{
+public:
+    vector<vector<int>> dp;
+    int solve(int i , int j, int &maxi, vector<vector<int>> &mat, int n, int m){
+        
+        if(i>=n || j>=m )
+            return 0;
+            
+        int rightLength = solve(i, j+1, maxi, mat, n, m);
+        int downLength = solve(i+1 , j, maxi, mat, n, m);
+        int diagLength = solve(i+1, j+1, maxi, mat, n, m);
+        
+        if(dp[i][j] !=-1 ) return dp[i][j];
+        
+        if(mat[i][j] == 1){
+            int commonLength = 1 + min(rightLength, min(downLength, diagLength));
+            
+            maxi = max(maxi, commonLength);
+            
+            return dp[i][j]= commonLength;
+        }
+        else
+            return dp[i][j]= 0;
+            
+        
+    }
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        if(n==0 || m==0) return 0;
+        
+        int maxi = INT_MIN;
+        dp.assign(n+1,vector<int> (m+1, -1));
+        
+        solve(0, 0, maxi, mat, n, m);
+        return maxi < 0 ?  0 : maxi; // 0< means all are 0's in matrix not possible to make square.
+    }
+};
+
+//============================= memoization ======================
+class Solution{
+public:
+    vector<vector<int>> dp;
+    int solve(int i , int j, int &maxi, vector<vector<int>> &mat, int n, int m){
+        
+        if(i>=n || j>=m )
+            return 0;
+         
+         
+         if(dp[i][j] !=-1 ) return dp[i][j]; 
+            
+        int rightLength = solve(i, j+1, maxi, mat, n, m);
+        int downLength = solve(i+1 , j, maxi, mat, n, m);
+        int diagLength = solve(i+1, j+1, maxi, mat, n, m);
+        
+       
+        
+        if(mat[i][j] == 1){
+            int commonLength = 1 + min(rightLength, min(downLength, diagLength));
+            
+            maxi = max(maxi, commonLength);
+            
+            return dp[i][j]= commonLength;
+        }
+        else
+            return dp[i][j]= 0;
+            
+        
+    }
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        if(n==0 || m==0) return 0;
+        
+        int maxi = INT_MIN;
+        dp.assign(n+1,vector<int> (m+1, -1));
+        
+        solve(0, 0, maxi, mat, n, m);
+        return maxi < 0 ?  0 : maxi; // 0< means all are 0's in matrix not possible to make square.
+    }
+};
+
+//=================================== dp ===================================
+
+class Solution{
+public:
+   
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        if(n==0 || m==0) return 0;
+        
+        int maxi = INT_MIN;
+        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+        
+        for(int i=n-1; i>=0 ; i--){
+            for(int j=m-1; j>=0; j--){
+                
+                int rLength = dp[i][j+1];
+                int downLength = dp[i+1][j];
+                int diagLength = dp[i+1][j+1];
+                
+                if(mat[i][j] == 1){
+                    int commonLength = 1 + min(rLength, min(downLength, diagLength));
+                    
+                    maxi = max(maxi, commonLength);
+                    
+                    dp[i][j] = commonLength;
+                }
+                
+                else if(mat[i][j] == 0)
+                    dp[i][j] = 0;
+            }
+        }
+        
+       
+        return maxi < 0 ?  0 : maxi; // 0< means all are 0's in matrix not possible to make square.
+    }
+};
+
+//=================================== SpOp ==============================================
+
+class Solution{
+public:
+   
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        if(n==0 || m==0) return 0;
+        
+        int maxi = INT_MIN;
+        vector<int> currRow(m+1, 0);
+        vector<int> nextRow(m+1, 0);
+        
+        for(int i=n-1; i>=0 ; i--){
+            for(int j=m-1; j>=0; j--){
+                
+                int rLength = currRow[j+1];
+                int downLength = nextRow[j];
+                int diagLength = nextRow[j+1];
+                
+                if(mat[i][j] == 1){
+                    int commonLength = 1 + min(rLength, min(downLength, diagLength));
+                    
+                    maxi = max(maxi, commonLength);
+                    
+                    currRow[j] = commonLength;
+                }
+                
+                else if(mat[i][j] == 0)
+                    currRow[j] = 0;
+            }
+            nextRow = currRow;
+        }
+        
+       
+        return maxi < 0 ?  0 : maxi; // 0< means all are 0's in matrix not possible to make square.
+    }
+};
