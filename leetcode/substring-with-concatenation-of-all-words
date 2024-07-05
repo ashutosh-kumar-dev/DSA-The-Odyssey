@@ -1,0 +1,60 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        
+        vector<int> ans;
+
+        if(s.empty() || words.empty()) return ans;
+
+        int singleWordLength  = words[0].length();
+        int wordArrSize= words.size();
+
+        if(s.length() < wordArrSize * singleWordLength ) return ans;
+
+        unordered_map<string ,int > refMap;
+        for(string w: words){
+            refMap[w]++;
+        }
+        //one while loop was sufficient for sliding window. but if string is of length when the complete conctenated word cannot fit.. then we have to try it for some other starting index. here after the fix single word length the same sequence would repeat .for iteration in the string s.   so loop under the length of the single word and not for the whole given string s.
+        for(int i = 0; i < singleWordLength ; i++){
+
+            int l = i;
+            int r = i;
+            unordered_map<string ,int> map;
+            int count = 0;
+
+            while(r + singleWordLength <= s.length()){
+                string word = s.substr(r, singleWordLength);
+                r+= singleWordLength;
+
+                if(refMap.find(word) != refMap.end()){
+                    
+                    map[word]++;
+                    count++;
+
+                    if(map[word] > refMap[word]){
+                        while(map[word] > refMap[word]){
+                            string lword = s.substr(l,singleWordLength);
+                            map[lword]--;
+                            count--;
+                            l+= singleWordLength;
+                        }
+                    }
+                    if(count == wordArrSize){
+                        ans.push_back(l);
+                    }
+                }
+
+                else{
+                    map.clear();
+                    l = r;
+                    count = 0;
+                }
+
+            }
+
+        }
+        return ans;
+
+    }
+};
