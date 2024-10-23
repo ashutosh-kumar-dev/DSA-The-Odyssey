@@ -1,0 +1,48 @@
+=========================================== recursion =======================================
+
+class Solution {
+
+vector<vector<int>> solve(int row){
+    if(row == 0) return {};
+    if(row == 1) return {{1}};
+
+    vector<vector<int>> prevRow = solve(row-1);
+    vector<int> newRow(row,1);
+
+    for(int i=1; i<row-1 ; i++){
+        newRow[i] = prevRow.back()[i-1] + prevRow.back()[i];
+    }
+    prevRow.push_back(newRow);
+
+    return prevRow;
+}
+public:
+    vector<vector<int>> generate(int row) {
+        return solve(row);
+    }
+};
+==============================================================================
+
+class Solution {
+
+
+public:
+    vector<vector<int>> generate(int row) {
+        
+        vector<vector<int>> prevRow;
+
+        for(int i=0; i<row ; i++){
+
+            vector<int> newRow(i+1, 1);
+            for(int j=1; j<i; j++){
+                newRow[j] = prevRow.back()[j-1] + prevRow.back()[j];
+            }
+
+            prevRow.push_back(newRow);
+
+        }
+
+        return prevRow;
+
+    }
+};
