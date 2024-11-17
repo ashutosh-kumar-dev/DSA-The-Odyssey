@@ -1,0 +1,47 @@
+class Solution {
+  public:
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(int V, vector<vector<int>> adj) {
+        
+        int n = adj.size();
+        vector<int> indegree(n, 0);
+        
+        
+        for(int i = 0; i<n ; i++){
+            for(int x : adj[i]){
+                indegree[x] ++ ;
+            }
+        }
+        
+        
+        queue<int> que;
+        int count = 0;
+        
+        for(int i = 0; i<n ; i++){
+            if(indegree[i] == 0) que.push(i);
+        }
+        
+        
+        while(!que.empty()){
+            
+            int node  = que.front();
+            que.pop();
+            
+            count++;
+            
+            
+            for(int cnode : adj[node]){
+                
+                indegree[cnode] --;
+                
+                if(indegree[cnode] == 0) que.push(cnode);
+            }
+        }
+        
+        if(count == n) return false;
+        
+        
+        return true;
+        
+    }
+};
