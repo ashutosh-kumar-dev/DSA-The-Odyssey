@@ -1,0 +1,44 @@
+// User Function Template
+class Solution {
+  public:
+    // Function to find the shortest distance of all the vertices
+    // from the source vertex src.
+    vector<int> dijkstra(vector<vector<pair<int, int>>> &adj, int src) {
+        
+        
+        
+        
+        priority_queue<pair<int, int> , vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        pq.push({0, src});
+        
+        vector<int> dis(adj.size(), INT_MAX);
+        dis[src]= 0;
+        
+        while(!pq.empty()){
+            
+            int nodeDis = pq.top().first;
+            int node = pq.top().second;
+            
+            pq.pop();
+            
+            for(auto cnode : adj[node]){
+                
+                int cnode1 = cnode.first;
+                int edgewt =  cnode.second;
+                
+                if(dis[node] + edgewt< dis[cnode1]){
+                    
+                    dis[cnode1] = dis[node] + edgewt;
+                    pq.push({dis[cnode1] , cnode1});
+                    
+                }
+            }
+        }
+        
+        return dis;
+        
+       
+       
+       
+    }
+};
