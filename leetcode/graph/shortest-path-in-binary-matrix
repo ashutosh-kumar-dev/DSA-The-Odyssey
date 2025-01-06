@@ -1,0 +1,59 @@
+/
+
+here we are not using priority queue because at every level the node distance is inc by 1 not random 
+so it is behaving like normal que and select all the conn node instead of selecting the minimum
+
+and also we are not stoping when the last node is founded in the conn - node instead of when the last node will be ready to explore
+*/
+
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        
+        int n= grid.size();
+        int m = grid[0].size();
+
+        if (grid[0][0] == 1 || grid[n-1][m-1] == 1) return -1; // this is the edge condition
+
+        //priority_queue<pair<int, pair<int, int>> , vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+        queue<pair<int, pair<int, int>>> que;
+        que.push({1, {0,0}});
+        vector<vector<int>> dist(n, vector<int> (m, INT_MAX));
+        dist[0][0] = 1;
+
+        int delr[] = {0,-1, -1, -1, 0, 1, 1, 1};
+        int delc[] = {-1, -1, 0, 1, 1, 1, 0, -1};
+
+        
+
+        while(!que.empty()){
+            int row = que.front().second.first;
+            int col = que.front().second.second;
+            int nodeW = que.front().first;
+
+            que.pop();
+
+            if(row == n-1 && col == m-1) return nodeW;
+
+            for(int i = 0; i<8; i++){
+                int nrow = row + delr[i];
+                int ncol = col + delc[i];
+
+                if(nrow>=0 && nrow < n && ncol >=0 && ncol < m 
+                && grid[nrow][ncol] == 0 && nodeW + 1 < dist[nrow][ncol]){
+                    
+                    dist[nrow][ncol] = nodeW + 1;
+                    que.push({dist[nrow][ncol], {nrow, ncol}});
+
+                }
+                
+            }
+
+        }
+
+        return -1;
+
+
+
+    }
+};
