@@ -1,0 +1,55 @@
+/*
+our main priority is no of stops(nodes> ..
+priority queue with distance not work .. by stops will work 
+but it will behave like que(explore all the connected-node 
+not the minimum as all the conn-nodes will be in same level in next stop.
+
+so better use que insted.
+
+*/
+
+class Solution {
+  public:
+    int CheapestFLight(int n, vector<vector<int>>& flights, int src, int dst, int K)  {
+        
+        vector<vector<pair<int, int>>> adj(n);
+        
+        for( auto it : flights){
+            adj[it[0]].push_back({it[1], it[2]});
+        }
+        
+        queue<pair<int, pair<int, int>>> que;
+        que.push({0, {src, 0}});
+        
+        vector<int> dis(n, INT_MAX);
+        dis[src] = 0;
+        
+        while(!que.empty()){
+            
+            int stops = que.front().first;
+            int node = que.front().second.first;
+            int nodeW = que.front().second.second;
+            
+            que.pop();
+            
+            if(stops > K) continue;
+            
+            
+            for(auto it : adj[node]){
+                
+                int cnode = it.first;
+                int edgeW = it.second;
+                
+                if( nodeW + edgeW < dis[cnode] && stops <=K) {
+                    dis[cnode] = nodeW + edgeW;
+                    que.push({stops+1, {cnode, dis[cnode]}});
+                }
+                
+            }
+        }
+        
+        return dis[dst] == INT_MAX ? -1 : dis[dst];
+        
+        
+    }
+};
