@@ -1,0 +1,65 @@
+
+/*
+
+of the minimun cost i have to get all the paht having this minimum cost.
+
+by dijkstra algo we will have the minimum path.
+
+so idea is that on forming the minimum path i will keep track the count of
+path to this current ongoinig minimum node.
+
+*/
+class Solution {
+  public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+        
+        int mod = (int)(1e9 + 7);
+        
+        vector<vector<pair<int, int>>> adj(n);
+        
+        for( auto it : roads){
+            adj[it[0]].push_back({it[1], it[2]});
+            adj[it[1]].push_back({it[0], it[2]});
+            
+        }
+        
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        
+        vector<int> dist(n, INT_MAX);
+        vector<int> ways(n, 0);
+        
+        pq.push({0,0});
+        dist[0] = 0;
+        ways[0] = 1;
+        
+        
+        while(!pq.empty()){
+            
+            int node = pq.top().second;
+            int nodeW = pq.top().first;
+            
+            pq.pop();
+            
+            if (nodeW > dist[node]) continue;
+
+            for( auto it : adj[node]){
+                int cnode = it.first;
+                int edgeW = it.second;
+                
+                if(nodeW + edgeW < dist[cnode]){
+                    dist[cnode] = nodeW + edgeW;
+                    pq.push({dist[cnode], cnode});
+                    ways[cnode] = ways[node]; //if the previous minimum of the node is greater than the current mimimum
+                                                //then i will discard the old .
+                }
+                
+                else if(nodeW + edgeW == dist[cnode]){/*so if same mimimum cost to that node from other path , i will added 
+                                                      this path counts also to it.*/
+                    ways[cnode] = (ways[cnode] + ways[node]) % mod; 
+                }
+            }
+        }
+        
+        return ways[n-1] % mod;
+    }
+};
