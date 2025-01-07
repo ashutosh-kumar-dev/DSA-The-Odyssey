@@ -1,0 +1,38 @@
+
+class Solution {
+  public:
+    int minimumMultiplications(vector<int>& arr, int start, int end) {
+        
+        if (start == end) return 0;
+
+        queue<pair<int, int>> que;
+        que.push({0, start});
+        
+        vector<int> dist(100000, INT_MAX);
+        dist[start] = 0;
+        
+        int mod = 100000;
+        
+        while(!que.empty()){
+            
+            int node = que.front().second;
+            int stepN = que.front().first;
+            
+            
+            que.pop();
+            
+            for(int it : arr){
+                int cnode = (it * node) % mod;
+                
+                if(stepN + 1 < dist[cnode]){
+                    
+                    dist[cnode] = stepN + 1;
+                    if(cnode == end) return dist[cnode];
+                    
+                    que.push({dist[cnode], cnode});
+                }
+            }
+        }
+        return -1;
+    }
+};
