@@ -1,0 +1,41 @@
+class Solution {
+
+void dfs(int row, int col, vector<vector<int>> & vis, vector<vector<int>>& image,
+ int color, int oldColor, int n, int m){
+
+    vis[row][col] = color;
+
+    int drow[] = {0,-1,0,1};
+    int dcol[] = {-1,0,1,0};
+
+    for(int i =0; i<4; i++){
+
+        int nrow = row + drow[i];
+        int ncol = col + dcol[i];
+
+        if(nrow>=0 && nrow<n && ncol>=0 && ncol<m 
+            && image[nrow][ncol] == oldColor && vis[nrow][ncol] != color){
+                
+                vis[nrow][ncol] = color;
+                dfs(nrow, ncol, vis, image, color, oldColor, n, m);
+            }
+    }
+
+}
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        
+        int n = image.size();
+        int m = image[0].size();
+        int oldColor = image[sr][sc];
+        vector<vector<int>> vis = image;
+
+        dfs(sr, sc, vis, image, color, oldColor, n, m);
+
+        return vis;
+
+
+
+
+    }
+};
