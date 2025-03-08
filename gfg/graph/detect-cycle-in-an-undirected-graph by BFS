@@ -1,0 +1,65 @@
+
+/*
+
+idea =>  node ka next connected node( cnode) agar visted hai to wo uska node Parent node hi
+hoga.... 
+
+
+uus node ka line me sara cnode unvisted hona chaiye... visited mila to wo parent hi hoga nhi to 
+pakka loop wala connection hai
+
+*/
+
+class Solution {
+    
+bool detect(int node, vector<int> & vis, vector<vector<int>>& adj){
+    
+    queue<pair<int, int>> que;
+    que.push({node, -1});
+    vis[node] = 1;
+    
+    while(!que.empty()){
+        
+        int node = que.front().first;
+        int parent = que.front().second;
+        
+        que.pop();
+        
+        for(int cnode : adj[node]){
+            
+            if(vis[cnode] != 1){
+                
+                vis[cnode] = 1;
+                que.push({cnode, node});
+                
+            }
+            
+            else if( parent != cnode) return true;
+        }
+    }
+    
+    return false;
+    
+}
+  public:
+    
+    bool isCycle(vector<vector<int>>& adj) {
+        
+        int n = adj.size();
+        vector<int> vis(n, 0);
+        
+        for(int i=0; i<n; i++){
+            
+            if(vis[i] != 1){
+                
+                if(detect(i, vis, adj) == true ) return true;
+                
+                
+            }
+        }
+        
+        return false;
+        
+        // Code here
+    }
+};
